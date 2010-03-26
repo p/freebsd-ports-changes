@@ -1,0 +1,7 @@
+bin/git-svn-replay
+%%SITE_PERL%%/%%PERL_ARCH%%/auto/Git/SVNReplay/.packlist
+%%SITE_PERL%%/Git/SVNReplay.pm
+%%SITE_PERL%%/Git/SVNReplay.pod
+@dirrm %%SITE_PERL%%/%%PERL_ARCH%%/auto/Git/SVNReplay
+@dirrmtry %%SITE_PERL%%/%%PERL_ARCH%%/auto/Git
+@dirrmtry %%SITE_PERL%%/Git

@@ -1,0 +1,29 @@
+--- trac/admin/console.py.dist	2010-02-15 17:18:20.000000000 -0500
++++ trac/admin/console.py	2010-02-15 17:26:32.000000000 -0500
+@@ -289,8 +289,8 @@
+ 
+     def all_docs(cls):
+         return (cls._help_help + cls._help_initenv + cls._help_hotcopy +
+-                cls._help_resync + cls._help_upgrade + cls._help_deploy +
+-                cls._help_permission + cls._help_wiki +
++                cls._help_sync + cls._help_resync + cls._help_upgrade +
++                cls._help_deploy + cls._help_permission + cls._help_wiki +
+                 cls._help_ticket + cls._help_ticket_type + 
+                 cls._help_priority + cls._help_severity +
+                 cls._help_component + cls._help_version +
+@@ -649,6 +649,15 @@
+            project_dir=os.path.basename(self.envname),
+            config_path=os.path.join(self.envname, 'conf', 'trac.ini')))
+ 
++    _help_sync = [('sync', 'Synchronize trac with the repository')]
++
++    ## Sync
++    def do_sync(self, line):
++        env = self.env_open()
++        printout(_("Syncing repository history... "))
++        repos = env.get_repository().sync(self._resync_feedback)
++        printout(_("Done."))
++
+     _help_resync = [('resync', 'Re-synchronize trac with the repository'),
+                     ('resync <rev>', 'Re-synchronize only the given <rev>')]
+ 

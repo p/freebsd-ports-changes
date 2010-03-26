@@ -1,0 +1,16 @@
+Index: Makefile
+===================================================================
+RCS file: /home/ncvs/ports/www/webkit-gtk2/Makefile,v
+retrieving revision 1.17
+diff -u -r1.17 Makefile
+--- Makefile	10 Feb 2010 15:20:20 -0000	1.17
++++ Makefile	20 Mar 2010 01:21:01 -0000
+@@ -60,6 +60,8 @@
+ .if defined(WITH_VIDEO)
+ USE_GSTREAMER+=	yes
+ CONFIGURE_ARGS+=--enable-video
++.else
++CONFIGURE_ARGS+=--disable-video
+ .endif
+ 
+ .if defined(WITH_DEBUG)
