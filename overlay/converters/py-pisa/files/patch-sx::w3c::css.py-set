@@ -1,0 +1,24 @@
+--- sx/w3c/css.py.orig	2010-04-05 19:01:05.000000000 -0400
++++ sx/w3c/css.py	2010-04-05 19:02:44.000000000 -0400
+@@ -37,7 +37,11 @@
+ #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+ import copy
+-import sets
++try:
++    Set = set
++except NameError:
++    import sets
++    Set = sets.Set
+ import cssParser
+ import cssSpecial
+ 
+@@ -526,7 +530,7 @@
+ class CSSBuilder(cssParser.CSSBuilderAbstract):
+     RulesetFactory = CSSRuleset
+     SelectorFactory = CSSMutableSelector
+-    MediumSetFactory = sets.Set
++    MediumSetFactory = Set
+     DeclarationsFactory = CSSDeclarations
+     TermFunctionFactory = CSSTerminalFunction
+     TermOperatorFactory = CSSTerminalOperator
