@@ -1,0 +1,4 @@
+MediaWiki plugin introduces new wiki macro `mediawiki'.
+This macro turns trac wiki into pure MediaWiki.
+
+WWW:    http://trac-hacks.org/wiki/MediaWikiPluginMacro
