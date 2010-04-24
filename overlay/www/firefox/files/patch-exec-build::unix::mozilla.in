@@ -1,0 +1,11 @@
+--- build/unix/mozilla.in.orig	2010-04-02 12:02:18.000000000 -0400
++++ ./build/unix/mozilla.in	2010-04-23 20:06:16.000000000 -0400
+@@ -136,7 +136,7 @@
+ then
+   echo $dist_bin/run-mozilla.sh $script_args $dist_bin/$MOZILLA_BIN "$@"
+ fi
+-"$dist_bin/run-mozilla.sh" $script_args "$dist_bin/$MOZILLA_BIN" "$@"
++exec "$dist_bin/run-mozilla.sh" $script_args "$dist_bin/$MOZILLA_BIN" "$@"
+ exitcode=$?
+ 
+ exit $exitcode
