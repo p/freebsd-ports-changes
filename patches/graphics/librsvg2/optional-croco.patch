@@ -1,0 +1,46 @@
+? optional-croco.patch
+Index: Makefile
+===================================================================
+RCS file: /home/ncvs/ports/graphics/librsvg2/Makefile,v
+retrieving revision 1.82
+diff -u -r1.82 Makefile
+--- Makefile	28 Mar 2010 06:37:03 -0000	1.82
++++ Makefile	30 Apr 2010 21:54:51 -0000
+@@ -19,8 +19,7 @@
+ COMMENT=	Library for parsing and rendering SVG vector-graphic files
+ 
+ BUILD_DEPENDS=	freetype-config:${PORTSDIR}/print/freetype2
+-LIB_DEPENDS=	freetype.9:${PORTSDIR}/print/freetype2 \
+-		croco-${CROCO_VERSION}.3:${PORTSDIR}/textproc/libcroco
++LIB_DEPENDS=	freetype.9:${PORTSDIR}/print/freetype2
+ RUN_DEPENDS=	gtk-engines2>=2.7.5_1:${PORTSDIR}/x11-themes/gtk-engines2
+ 
+ USE_BZIP2=	yes
+@@ -32,7 +31,6 @@
+ 		LDFLAGS="-L${LOCALBASE}/lib"
+ CONFIGURE_ARGS=	--with-svgz \
+ 		--without-gimp \
+-		--with-croco \
+ 		--disable-gnome-vfs \
+ 		--enable-gtk-theme \
+ 		--disable-gnome-print
+@@ -41,10 +39,18 @@
+ 
+ MAN1=		rsvg.1
+ 
+-OPTIONS=	MOZILLA_PLUGIN "Enable the SVG browser plug-in" on
++OPTIONS=	CROCO "Use croco" on \
++		MOZILLA_PLUGIN "Enable the SVG browser plug-in" on
+ 
+ .include <bsd.port.pre.mk>
+ 
++.if defined(WITHOUT_CROCO)
++CONFIGURE_ARGS+=--without-croco
++.else
++LIB_DEPENDS+=	croco-${CROCO_VERSION}.3:${PORTSDIR}/textproc/libcroco
++CONFIGURE_ARGS+=--with-croco
++.endif
++
+ .if defined(WITH_MOZILLA_PLUGIN)
+ USE_GECKO=	libxul seamonkey
+ USE_WEBPLUGINS=	gecko19
