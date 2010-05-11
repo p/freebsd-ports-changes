@@ -1,0 +1,83 @@
+Index: Makefile
+===================================================================
+RCS file: /home/ncvs/ports/devel/py-Jinja2/Makefile,v
+retrieving revision 1.7
+diff -u -r1.7 Makefile
+--- Makefile	30 Apr 2010 15:07:32 -0000	1.7
++++ Makefile	11 May 2010 11:52:03 -0000
+@@ -7,6 +7,7 @@
+ 
+ PORTNAME=	Jinja2
+ PORTVERSION=	2.4.1
++PORTREVISION=	1
+ CATEGORIES=	devel python
+ MASTER_SITES=	CHEESESHOP \
+ 		http://nivi.interfree.it/distfiles/${PORTNAME}/
+@@ -17,6 +18,7 @@
+ 
+ USE_PYTHON=	2.4+
+ USE_PYDISTUTILS=	easy_install
++PYEASYINSTALL_ARCHDEP=	yes
+ 
+ DOCSDIR=	${PREFIX}/share/doc/${PKGNAMEPREFIX}${PORTNAME}
+ EXAMPLESDIR=	${PREFIX}/share/examples/${PKGNAMEPREFIX}${PORTNAME}
+Index: pkg-plist
+===================================================================
+RCS file: /home/ncvs/ports/devel/py-Jinja2/pkg-plist,v
+retrieving revision 1.6
+diff -u -r1.6 pkg-plist
+--- pkg-plist	30 Apr 2010 15:07:32 -0000	1.6
++++ pkg-plist	11 May 2010 11:52:03 -0000
+@@ -3,13 +3,17 @@
+ %%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/EGG-INFO/SOURCES.txt
+ %%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/EGG-INFO/dependency_links.txt
+ %%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/EGG-INFO/entry_points.txt
++%%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/EGG-INFO/native_libs.txt
+ %%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/EGG-INFO/not-zip-safe
+ %%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/EGG-INFO/requires.txt
+ %%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/EGG-INFO/top_level.txt
+ %%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/jinja2/__init__.py
+ %%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/jinja2/__init__.pyc
+ %%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/jinja2/__init__.pyo
+-%%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/jinja2/_speedups.c
++%%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/jinja2/_speedups.py
++%%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/jinja2/_speedups.pyc
++%%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/jinja2/_speedups.pyo
++%%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/jinja2/_speedups.so
+ %%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/jinja2/_stringdefs.py
+ %%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/jinja2/_stringdefs.pyc
+ %%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/jinja2/_stringdefs.pyo
+Index: files/patch-manifest.in-speedups
+===================================================================
+RCS file: files/patch-manifest.in-speedups
+diff -N files/patch-manifest.in-speedups
+--- /dev/null	1 Jan 1970 00:00:00 -0000
++++ files/patch-manifest.in-speedups	11 May 2010 11:52:03 -0000
+@@ -0,0 +1,9 @@
++--- MANIFEST.in.dist	2010-02-19 07:31:56.000000000 -0500
+++++ MANIFEST.in	2010-04-06 23:28:31.000000000 -0400
++@@ -1,4 +1,5 @@
++-include MANIFEST.in Makefile CHANGES LICENSE AUTHORS jinja2/_speedups.c
+++include MANIFEST.in Makefile CHANGES LICENSE AUTHORS
+++exclude jinja2/_speedups.c
++ recursive-include docs *
++ recursive-include custom_fixers *
++ recursive-include ext *
+Index: files/patch-setup.py-speedups
+===================================================================
+RCS file: files/patch-setup.py-speedups
+diff -N files/patch-setup.py-speedups
+--- /dev/null	1 Jan 1970 00:00:00 -0000
++++ files/patch-setup.py-speedups	11 May 2010 11:52:03 -0000
+@@ -0,0 +1,11 @@
++--- setup.py.orig	2010-05-10 20:18:44.000000000 -0400
+++++ setup.py	2010-05-10 20:19:39.000000000 -0400
++@@ -80,7 +80,7 @@
++     packages=['jinja2', 'jinja2.testsuite', 'jinja2.testsuite.res'],
++     features={
++         'speedups': Feature("optional C speed-enhancements",
++-            standard=False,
+++            standard=True,
++             ext_modules=[
++                 Extension('jinja2._speedups', ['jinja2/_speedups.c'])
++             ]
