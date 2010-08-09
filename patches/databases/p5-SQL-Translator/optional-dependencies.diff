@@ -1,0 +1,68 @@
+--- Makefile.dist	2010-08-09 15:40:08.000000000 -0400
++++ Makefile	2010-08-09 16:43:55.000000000 -0400
+@@ -23,17 +23,17 @@
+ 		p5-Parse-RecDescent>=1.962.2:${PORTSDIR}/devel/p5-Parse-RecDescent \
+ 		p5-Class-Accessor>=0:${PORTSDIR}/devel/p5-Class-Accessor \
+ 		p5-DBI>=0:${PORTSDIR}/databases/p5-DBI \
+-		p5-Template-Toolkit>=2.20:${PORTSDIR}/www/p5-Template-Toolkit \
+-		p5-GD>=0:${PORTSDIR}/graphics/p5-GD \
+-		p5-GraphViz>=0:${PORTSDIR}/graphics/p5-GraphViz \
+-		p5-Graph>=0:${PORTSDIR}/math/p5-Graph \
+-		p5-IO-stringy>=0:${PORTSDIR}/devel/p5-IO-stringy \
+-		p5-Spreadsheet-ParseExcel>=0.41:${PORTSDIR}/textproc/p5-Spreadsheet-ParseExcel \
+-		p5-Text-RecordParser>=0.02:${PORTSDIR}/textproc/p5-Text-RecordParser \
+-		p5-XML-Writer>=0.500:${PORTSDIR}/textproc/p5-XML-Writer \
+-		p5-YAML>=0.66:${PORTSDIR}/textproc/p5-YAML
++		p5-XML-Writer>=0.500:${PORTSDIR}/textproc/p5-XML-Writer
+ RUN_DEPENDS=	${BUILD_DEPENDS}
+ 
++OPTIONS=	GD "Use GD" on \
++		GRAPHVIZ "Use GraphViz" on \
++		GRAPH "Use Graph::Directed" on \
++		PARSEEXCEL "Use Spreadsheet::ParseExcel" on \
++		TT "Use Template::Toolkit" on \
++		RECORDPARSER "Use Text::RecordParser" on \
++		YAML "Use YAML" on
++
+ PERL_CONFIGURE=	yes
+ 
+ MAN1=		sqlt-diagram.1 \
+@@ -106,7 +106,37 @@
+ 		SQL::Translator::Utils.3 \
+ 		Test::SQL::Translator.3
+ 
++.include <bsd.port.pre.mk>
++
++.if defined(WITH_GD)
++RUN_DEPENDS+=	p5-GD>=0:${PORTSDIR}/graphics/p5-GD
++.endif
++
++.if defined(WITH_GRAPHVIZ)
++RUN_DEPENDS+=	p5-GraphViz>=0:${PORTSDIR}/graphics/p5-GraphViz
++.endif
++
++.if defined(WITH_GRAPH)
++RUN_DEPENDS+=	p5-Graph>=0:${PORTSDIR}/math/p5-Graph
++.endif
++
++.if defined(WITH_PARSEEXCEL)
++RUN_DEPENDS+=	p5-Spreadsheet-ParseExcel>=0.41:${PORTSDIR}/textproc/p5-Spreadsheet-ParseExcel
++.endif
++
++.if defined(WITH_TT)
++RUN_DEPENDS+=	p5-Template-Toolkit>=2.20:${PORTSDIR}/www/p5-Template-Toolkit
++.endif
++
++.if defined(WITH_RECORDPARSER)
++RUN_DEPENDS+=	p5-Text-RecordParser>=0.02:${PORTSDIR}/textproc/p5-Text-RecordParser
++.endif
++
++.if defined(WITH_YAML)
++RUN_DEPENDS+=	p5-YAML>=0.66:${PORTSDIR}/textproc/p5-YAML
++.endif
++
+ post-patch:
+ 	@${FIND} ${WRKSRC} -name "*.orig" -delete
+ 
+-.include <bsd.port.mk>
++.include <bsd.port.post.mk>
