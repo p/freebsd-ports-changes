@@ -1,0 +1,7 @@
+Chouwa is a library which aims to ease the integration of jinja2 into
+django projects. It does this by providing equivalents of some of
+django's helper methods which depend on its template subsystem, as well
+as providing builtin globals and filters and providing a mechanism for
+user applications to introduce their own globals and filters.
+
+WWW:	http://bitbucket.org/trevor/chouwa/overview
