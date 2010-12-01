@@ -1,0 +1,6 @@
+An implementation of schema evolution for the Django web framework.
+
+Django Evolution is an extension to Django that allows you to track changes
+in your models over time, and to update the database to reflect those changes. 
+
+WWW:	http://code.google.com/p/django-evolution/
