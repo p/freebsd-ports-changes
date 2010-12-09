@@ -1,0 +1,118 @@
+--- Makefile.dist	2010-11-30 19:30:08.000000000 -0500
++++ Makefile	2010-12-01 06:29:55.000000000 -0500
+@@ -16,10 +16,7 @@
+ COMMENT=	GNOME virtual file system
+ 
+ LIB_DEPENDS=	dbus-1.3:${PORTSDIR}/devel/dbus \
+-    		hal.1:${PORTSDIR}/sysutils/hal \
+-		soup-gnome-2.4.1:${PORTSDIR}/devel/libsoup-gnome \
+-		gnome-keyring:${PORTSDIR}/security/gnome-keyring \
+-		avahi-client.3:${PORTSDIR}/net/avahi-app
++		soup-gnome-2.4.1:${PORTSDIR}/devel/libsoup-gnome
+ RUN_DEPENDS=	gnome-mount:${PORTSDIR}/sysutils/gnome-mount
+ 
+ USE_BZIP2=	yes
+@@ -31,13 +28,24 @@
+ CONFIGURE_ENV=	CPPFLAGS="-I${LOCALBASE}/include" \
+ 		LDFLAGS="-L${LOCALBASE}/lib"
+ CONFIGURE_ARGS=	--disable-obexftp
+-OPTIONS=	FUSE "Enable fuse" off \
++OPTIONS=	AVAHI "Enable avahi support" on \
++		FUSE "Enable fuse" off \
++		GNOME_KEYRING "Enable GNOME Keyring support" on \
++		HAL "Enable HAL support" on \
+ 		SAMBA "Enable Samba" on \
+ 		GPHOTO2 "Enable Gphoto 2 camera support" on \
+ 		CDDA "Enable CDDA" on
+ 
+ .include <bsd.port.pre.mk>
+ 
++.if defined(WITH_AVAHI)
++LIB_DEPENDS+=	avahi-client.3:${PORTSDIR}/net/avahi-app
++PLIST_SUB+=	AVAHI=""
++.else
++CONFIGURE_ARGS+=	--disable-avahi
++PLIST_SUB+=	AVAHI="@comment "
++.endif
++
+ .if defined(WITH_FUSE)
+ LIB_DEPENDS+=	fuse.2:${PORTSDIR}/sysutils/fusefs-libs
+ RUN_DEPENDS+=	mount_fusefs:${PORTSDIR}/sysutils/fusefs-kmod
+@@ -47,6 +55,20 @@
+ PLIST_SUB+=	FUSE="@comment "
+ .endif
+ 
++.if defined(WITH_GNOME_KEYRING)
++LIB_DEPENDS+=	gnome-keyring:${PORTSDIR}/security/gnome-keyring
++.else
++CONFIGURE_ARGS+=	--disable-keyring
++.endif
++
++.if defined(WITH_HAL)
++LIB_DEPENDS+=	hal.1:${PORTSDIR}/sysutils/hal
++PLIST_SUB+=	HAL=""
++.else
++CONFIGURE_ARGS+=	--disable-hal
++PLIST_SUB+=	HAL="@comment "
++.endif
++
+ .if defined(WITH_SAMBA)
+ LIB_DEPENDS+=	smbclient.0:${PORTSDIR}/net/samba-libsmbclient
+ PLIST_SUB+=	SMB=""
+--- pkg-plist.dist	2010-12-01 06:24:16.000000000 -0500
++++ pkg-plist	2010-12-01 06:28:56.000000000 -0500
+@@ -24,22 +24,22 @@
+ lib/gio/modules/libgioremote-volume-monitor.so
+ lib/gio/modules/libgvfsdbus.la
+ lib/gio/modules/libgvfsdbus.so
+-lib/libgvfscommon-dnssd.la
+-lib/libgvfscommon-dnssd.so
+-lib/libgvfscommon-dnssd.so.0
++%%AVAHI%%lib/libgvfscommon-dnssd.la
++%%AVAHI%%lib/libgvfscommon-dnssd.so
++%%AVAHI%%lib/libgvfscommon-dnssd.so.0
+ lib/libgvfscommon.la
+ lib/libgvfscommon.so
+ lib/libgvfscommon.so.0
+ %%FUSE%%libexec/gvfs-fuse-daemon
+ %%GPHOTO2%%libexec/gvfs-gphoto2-volume-monitor
+-libexec/gvfs-hal-volume-monitor
++%%HAL%%libexec/gvfs-hal-volume-monitor
+ libexec/gvfsd
+ %%ARCHIVE%%libexec/gvfsd-archive
+ libexec/gvfsd-burn
+ %%CDDA%%libexec/gvfsd-cdda
+ libexec/gvfsd-computer
+ libexec/gvfsd-dav
+-libexec/gvfsd-dnssd
++%%AVAHI%%libexec/gvfsd-dnssd
+ libexec/gvfsd-ftp
+ %%GPHOTO2%%libexec/gvfsd-gphoto2
+ libexec/gvfsd-http
+@@ -53,14 +53,14 @@
+ share/dbus-1/services/gvfs-daemon.service
+ share/dbus-1/services/gvfs-metadata.service
+ %%GPHOTO2%%share/dbus-1/services/org.gtk.Private.GPhoto2VolumeMonitor.service
+-share/dbus-1/services/org.gtk.Private.HalVolumeMonitor.service
++%%HAL%%share/dbus-1/services/org.gtk.Private.HalVolumeMonitor.service
+ %%ARCHIVE%%share/gvfs/mounts/archive.mount
+ share/gvfs/mounts/burn.mount
+ %%CDDA%%share/gvfs/mounts/cdda.mount
+ share/gvfs/mounts/computer.mount
+ share/gvfs/mounts/dav.mount
+-share/gvfs/mounts/dav+sd.mount
+-share/gvfs/mounts/dns-sd.mount
++%%AVAHI%%share/gvfs/mounts/dav+sd.mount
++%%AVAHI%%share/gvfs/mounts/dns-sd.mount
+ share/gvfs/mounts/ftp.mount
+ %%GPHOTO2%%share/gvfs/mounts/gphoto2.mount
+ share/gvfs/mounts/http.mount
+@@ -71,7 +71,7 @@
+ %%SMB%%share/gvfs/mounts/smb.mount
+ share/gvfs/mounts/trash.mount
+ %%GPHOTO2%%share/gvfs/remote-volume-monitors/gphoto2.monitor
+-share/gvfs/remote-volume-monitors/hal.monitor
++%%HAL%%share/gvfs/remote-volume-monitors/hal.monitor
+ share/locale/af/LC_MESSAGES/gvfs.mo
+ share/locale/ar/LC_MESSAGES/gvfs.mo
+ share/locale/as/LC_MESSAGES/gvfs.mo
