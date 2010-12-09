@@ -1,0 +1,42 @@
+--- Makefile.orig	2010-12-01 07:18:04.000000000 -0500
++++ Makefile	2010-12-01 07:45:24.000000000 -0500
+@@ -21,12 +21,11 @@
+ .if !defined(REFERENCE_PORT)
+ 
+ BUILD_DEPENDS=	rarian-sk-config:${PORTSDIR}/textproc/rarian
+-LIB_DEPENDS=	canberra-gtk.0:${PORTSDIR}/audio/libcanberra
+ RUN_DEPENDS=	rarian-sk-config:${PORTSDIR}/textproc/rarian
+ 
+ USE_GETTEXT=	yes
+ USE_GMAKE=	yes
+-USE_GNOME=	gnomeprefix gnomehack intlhack esound libbonobo \
++USE_GNOME=	gnomeprefix gnomehack intlhack libbonobo \
+ 		gnomevfs2 ltverhack referencehack
+ USE_BISON=	build
+ USE_XORG=	xpm
+@@ -58,6 +57,25 @@
+ 		desktop_gnome_thumbnailers.schemas \
+ 		desktop_gnome_typing_break.schemas
+ 
++OPTIONS=	CANBERRA "Use canberra" on \
++		ESOUND "Use esound" off
++
++.include <bsd.port.options.mk>
++
++.if !defined(WITHOUT_CANBERRA)
++LIB_DEPENDS+=	canberra-gtk.0:${PORTSDIR}/audio/libcanberra
++CONFIGURE_ARGS+=--enable-canberra
++.else
++CONFIGURE_ARGS+=--disable-canberra
++.endif
++
++.if !defined(WITHOUT_ESOUND)
++USE_GNOME+=	esound
++CONFIGURE_ARGS+=--enable-esd
++.else
++CONFIGURE_ARGS+=--disable-esd
++.endif
++
+ post-patch:
+ 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \
+ 		${WRKSRC}/libgnome/libgnome-2.0.pc.in
