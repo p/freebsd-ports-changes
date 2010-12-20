@@ -1,0 +1,140 @@
+diff -ur gdk-pixbuf2.orig/Makefile gdk-pixbuf2/Makefile
+--- gdk-pixbuf2.orig/Makefile	2010-12-19 17:20:38.000000000 -0500
++++ gdk-pixbuf2/Makefile	2010-12-19 17:40:23.000000000 -0500
+@@ -16,11 +16,13 @@
+ MAINTAINER=	gnome@FreeBSD.org
+ COMMENT=	A graphic library for GTK+
+ 
+-BUILD_DEPENDS=	g-ir-scanner:${PORTSDIR}/devel/gobject-introspection
+-LIB_DEPENDS=	png.6:${PORTSDIR}/graphics/png \
+-		tiff.4:${PORTSDIR}/graphics/tiff \
+-		jpeg.11:${PORTSDIR}/graphics/jpeg \
+-		jasper.4:${PORTSDIR}/graphics/jasper
++OPTIONS=	INTROSPECTION "Enable introspection" on \
++		JASPER "JPEG2000 support via jasper" on \
++		JPEG "JPEG support" on \
++		PNG "PNG support" on \
++		TIFF "TIFF support" on
++
++.include <bsd.port.options.mk>
+ 
+ LATEST_LINK=	gdk-pixbuf2
+ USE_BZIP2=	yes
+@@ -32,10 +34,54 @@
+ GNU_CONFIGURE=	yes
+ CONFIGURE_ENV=	CPPFLAGS="-I${LOCALBASE}/include" \
+ 		LIBS="-L${LOCALBASE}/lib"
+-CONFIGURE_ARGS=	--enable-introspection=yes --with-libjasper
+ 
+ MAN1=		gdk-pixbuf-csource.1 gdk-pixbuf-query-loaders.1
+ 
++.if defined(WITH_INTROSPECTION)
++BUILD_DEPENDS+=	g-ir-scanner:${PORTSDIR}/devel/gobject-introspection
++CONFIGURE_ARGS+=--enable-introspection=yes
++PLIST_SUB+=	INTROSPECTION=""
++.else
++CONFIGURE_ARGS+=--enable-introspection=no
++PLIST_SUB+=	INTROSPECTION="@comment "
++.endif
++
++.if defined(WITH_JASPER)
++CONFIGURE_ARGS+=--with-libjasper
++LIB_DEPENDS+=	jasper.4:${PORTSDIR}/graphics/jasper
++PLIST_SUB+=	JASPER=""
++.else
++CONFIGURE_ARGS+=--without-libjasper
++PLIST_SUB+=	JASPER="@comment "
++.endif
++
++.if defined(WITH_JPEG)
++CONFIGURE_ARGS+=--with-libjpeg
++LIB_DEPENDS+=	jpeg.11:${PORTSDIR}/graphics/jpeg
++PLIST_SUB+=	JPEG=""
++.else
++CONFIGURE_ARGS+=--without-libjpeg
++PLIST_SUB+=	JPEG="@comment "
++.endif
++
++.if defined(WITH_PNG)
++CONFIGURE_ARGS+=--with-libpng
++LIB_DEPENDS+=	png.6:${PORTSDIR}/graphics/png
++PLIST_SUB+=	PNG=""
++.else
++CONFIGURE_ARGS+=--without-libpng
++PLIST_SUB+=	PNG="@comment "
++.endif
++
++.if defined(WITH_TIFF)
++CONFIGURE_ARGS+=--with-libtiff
++LIB_DEPENDS+=	tiff.4:${PORTSDIR}/graphics/tiff
++PLIST_SUB+=	TIFF=""
++.else
++CONFIGURE_ARGS+=--without-libtiff
++PLIST_SUB+=	TIFF="@comment "
++.endif
++
+ post-patch:
+ 	@${REINPLACE_CMD} -e 's|" == "|" = "|g' ${WRKSRC}/configure
+ 
+diff -ur gdk-pixbuf2.orig/pkg-plist gdk-pixbuf2/pkg-plist
+--- gdk-pixbuf2.orig/pkg-plist	2010-12-19 17:20:38.000000000 -0500
++++ gdk-pixbuf2/pkg-plist	2010-12-19 17:38:27.000000000 -0500
+@@ -28,18 +28,18 @@
+ lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-ico.a
+ lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-ico.la
+ lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-ico.so
+-lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-jasper.a
+-lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-jasper.la
+-lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-jasper.so
+-lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-jpeg.a
+-lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-jpeg.la
+-lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-jpeg.so
++%%JASPER%%lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-jasper.a
++%%JASPER%%lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-jasper.la
++%%JASPER%%lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-jasper.so
++%%JPEG%%lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-jpeg.a
++%%JPEG%%lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-jpeg.la
++%%JPEG%%lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-jpeg.so
+ lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-pcx.a
+ lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-pcx.la
+ lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-pcx.so
+-lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-png.a
+-lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-png.la
+-lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-png.so
++%%PNG%%lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-png.a
++%%PNG%%lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-png.la
++%%PNG%%lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-png.so
+ lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-pnm.a
+ lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-pnm.la
+ lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-pnm.so
+@@ -52,9 +52,9 @@
+ lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-tga.a
+ lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-tga.la
+ lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-tga.so
+-lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-tiff.a
+-lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-tiff.la
+-lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-tiff.so
++%%TIFF%%lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-tiff.a
++%%TIFF%%lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-tiff.la
++%%TIFF%%lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-tiff.so
+ lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-wbmp.a
+ lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-wbmp.la
+ lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-wbmp.so
+@@ -64,7 +64,7 @@
+ lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-xpm.a
+ lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-xpm.la
+ lib/gdk-pixbuf-2.0/%%GTK2_VERSION%%/loaders/libpixbufloader-xpm.so
+-lib/girepository-1.0/GdkPixbuf-2.0.typelib
++%%INTROSPECTION%%lib/girepository-1.0/GdkPixbuf-2.0.typelib
+ lib/libgdk_pixbuf-2.0.a
+ lib/libgdk_pixbuf-2.0.la
+ lib/libgdk_pixbuf-2.0.so
+@@ -75,7 +75,7 @@
+ lib/libgdk_pixbuf_xlib-2.0.so.0
+ libdata/pkgconfig/gdk-pixbuf-2.0.pc
+ libdata/pkgconfig/gdk-pixbuf-xlib-2.0.pc
+-share/gir-1.0/GdkPixbuf-2.0.gir
++%%INTROSPECTION%%share/gir-1.0/GdkPixbuf-2.0.gir
+ share/locale/af/LC_MESSAGES/gdk-pixbuf.mo
+ share/locale/ang/LC_MESSAGES/gdk-pixbuf.mo
+ share/locale/ar/LC_MESSAGES/gdk-pixbuf.mo
