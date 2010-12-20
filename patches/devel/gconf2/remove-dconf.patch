@@ -1,0 +1,11 @@
+--- Makefile.orig	2010-12-19 16:51:00.726257732 -0500
++++ Makefile	2010-12-19 16:51:07.161870080 -0500
+@@ -31,7 +31,7 @@
+ USE_GMAKE=	yes
+ USE_GETTEXT=	yes
+ USE_GNOME=	gnomehier gnomehack orbit2 gtk20 libxml2 ltverhack \
+-		referencehack intlhack dconf
++		referencehack intlhack
+ USE_LDCONFIG=	yes
+ USE_AUTOTOOLS=	libtool
+ CONFIGURE_ARGS=	--with-html-dir=${PREFIX}/share/doc \
