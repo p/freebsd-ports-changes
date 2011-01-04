@@ -1,0 +1,64 @@
+diff -u polkit.orig/Makefile polkit/Makefile
+--- polkit.orig/Makefile	2011-01-03 19:53:00.290122635 -0500
++++ polkit/Makefile	2011-01-04 06:56:44.941914691 -0500
+@@ -14,10 +14,12 @@
+ MAINTAINER=	gnome@FreeBSD.org
+ COMMENT=	Framework for controlling access to system-wide components
+ 
+-BUILD_DEPENDS=	${LOCALBASE}/share/gir-1.0/GLib-2.0.gir:${PORTSDIR}/devel/gobject-introspection
++OPTIONS=	INTROSPECTION "Enable introspection" on
++
++.include <bsd.port.options.mk>
++
+ LIB_DEPENDS=	eggdbus-1.0:${PORTSDIR}/devel/eggdbus \
+ 		expat.6:${PORTSDIR}/textproc/expat2
+-RUN_DEPENDS=	${LOCALBASE}/share/gir-1.0/GLib-2.0.gir:${PORTSDIR}/devel/gobject-introspection
+ 
+ USE_GNOME=	gnomehack glib20 intlhack
+ USE_GMAKE=	yes
+@@ -28,12 +30,22 @@
+ 		--with-authfw=pam \
+ 		--with-pam-include=system \
+ 		--with-os-type=freebsd \
+-		--enable-introspection \
+ 		--localstatedir=/var
+ CONFIGURE_ENV=	CPPFLAGS="-I${LOCALBASE}/include" \
+ 		LDFLAGS="-L${LOCALBASE}/lib" \
+ 		GTKDOC="false"
+ 
++.if defined(ENABLE_INTROSPECTION)
++BUILD_DEPENDS+=	${LOCALBASE}/share/gir-1.0/GLib-2.0.gir:${PORTSDIR}/devel/gobject-introspection
++RUN_DEPENDS+=	${LOCALBASE}/share/gir-1.0/GLib-2.0.gir:${PORTSDIR}/devel/gobject-introspection
++CONFIGURE_ARGS+=--enable-introspection
++PLIST_SUB+=	INTROSPECTION=""
++.else
++CONFIGURE_ARGS+=--disable-introspection
++PLIST_SUB+=	INTROSPECTION="@comment "
++.endif
++
++
+ .if defined(NO_INSTALL_MANPAGES)
+ CONFIGURE_ARGS+=--disable-man-pages
+ .else
+Common subdirectories: polkit.orig/files and polkit/files
+diff -u polkit.orig/pkg-plist polkit/pkg-plist
+--- polkit.orig/pkg-plist	2011-01-03 19:53:00.290122635 -0500
++++ polkit/pkg-plist	2011-01-03 19:55:25.786791904 -0500
+@@ -40,7 +40,7 @@
+ include/polkit-1/polkitbackend/polkitbackendinteractiveauthority.h
+ include/polkit-1/polkitbackend/polkitbackendlocalauthority.h
+ include/polkit-1/polkitbackend/polkitbackendtypes.h
+-lib/girepository-1.0/Polkit-1.0.typelib
++%%INTROSPECTION%%lib/girepository-1.0/Polkit-1.0.typelib
+ lib/libpolkit-agent-1.a
+ lib/libpolkit-agent-1.la
+ lib/libpolkit-agent-1.so
+@@ -65,7 +65,7 @@
+ libexec/polkit-agent-helper-1
+ libexec/polkitd
+ share/dbus-1/system-services/org.freedesktop.PolicyKit1.service
+-share/gir-1.0/Polkit-1.0.gir
++%%INTROSPECTION%%share/gir-1.0/Polkit-1.0.gir
+ share/locale/da/LC_MESSAGES/polkit-1.mo
+ share/polkit-1/actions/org.freedesktop.policykit.policy
+ @dirrmtry share/polkit-1/actions

@@ -1,0 +1,58 @@
+--- Makefile.orig	2011-01-03 19:44:45.817655324 -0500
++++ Makefile	2011-01-03 19:47:28.716961242 -0500
+@@ -20,7 +20,9 @@
+ 
+ .if !defined(REFERENCE_PORT)
+ 
+-BUILD_DEPENDS=	g-ir-scanner:${PORTSDIR}/devel/gobject-introspection
++OPTIONS=	INTROSPECTION "Enable introspection" on
++
++.include <bsd.port.options.mk>
+ 
+ USE_GETTEXT=	yes
+ USE_GMAKE=	yes
+@@ -34,6 +36,15 @@
+ 		LDFLAGS="-L${LOCALBASE}/lib" \
+ 		AUTOCONF=${TRUE} AUTOMAKE=${TRUE}
+ 
++.if defined(ENABLE_INTROSPECTION)
++BUILD_DEPENDS+= g-ir-scanner:${PORTSDIR}/devel/gobject-introspection
++CONFIGURE_ARGS+=--enable-introspection
++PLIST_SUB+=	INTROSPECTION=""
++.else
++CONFIGURE_ARGS+=--disable-introspection
++PLIST_SUB+=	INTROSPECTION="@comment "
++.endif
++
+ post-patch:
+ 	@${REINPLACE_CMD} -e "/^SUBDIRS =/s/tests//" \
+ 		${WRKSRC}/Makefile.in
+--- pkg-plist.orig	2011-01-03 19:46:34.171836093 -0500
++++ pkg-plist	2011-01-03 19:47:06.395870712 -0500
+@@ -28,13 +28,13 @@
+ include/atk-1.0/atk/atktext.h
+ include/atk-1.0/atk/atkutil.h
+ include/atk-1.0/atk/atkvalue.h
+-lib/girepository-1.0/Atk-1.0.typelib
++%%INTROSPECTION%%lib/girepository-1.0/Atk-1.0.typelib
+ lib/libatk-1.0.a
+ lib/libatk-1.0.la
+ lib/libatk-1.0.so
+ lib/libatk-1.0.so.0
+ libdata/pkgconfig/atk.pc
+-share/gir-1.0/Atk-1.0.gir
++%%INTROSPECTION%%share/gir-1.0/Atk-1.0.gir
+ share/locale/af/LC_MESSAGES/atk10.mo
+ share/locale/am/LC_MESSAGES/atk10.mo
+ share/locale/ar/LC_MESSAGES/atk10.mo
+@@ -130,8 +130,8 @@
+ share/locale/zh_TW/LC_MESSAGES/atk10.mo
+ @dirrm include/atk-1.0/atk
+ @dirrm include/atk-1.0
+-@dirrmtry share/gir-1.0
+-@dirrmtry lib/girepository-1.0
++%%INTROSPECTION%%@dirrmtry share/gir-1.0
++%%INTROSPECTION%%@dirrmtry lib/girepository-1.0
+ @dirrmtry share/locale/zh_HK/LC_MESSAGES
+ @dirrmtry share/locale/zh_HK
+ @dirrmtry share/locale/yi/LC_MESSAGES
