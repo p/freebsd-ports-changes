@@ -1,6 +1,6 @@
 diff -u polkit.orig/Makefile polkit/Makefile
 --- polkit.orig/Makefile	2011-01-03 19:53:00.290122635 -0500
-+++ polkit/Makefile	2011-01-04 06:56:44.941914691 -0500
++++ polkit/Makefile	2011-01-04 18:15:48.154005052 -0500
 @@ -14,10 +14,12 @@
  MAINTAINER=	gnome@FreeBSD.org
  COMMENT=	Framework for controlling access to system-wide components
@@ -26,7 +26,7 @@ diff -u polkit.orig/Makefile polkit/Makefile
  		LDFLAGS="-L${LOCALBASE}/lib" \
  		GTKDOC="false"
  
-+.if defined(ENABLE_INTROSPECTION)
++.if defined(WITH_INTROSPECTION)
 +BUILD_DEPENDS+=	${LOCALBASE}/share/gir-1.0/GLib-2.0.gir:${PORTSDIR}/devel/gobject-introspection
 +RUN_DEPENDS+=	${LOCALBASE}/share/gir-1.0/GLib-2.0.gir:${PORTSDIR}/devel/gobject-introspection
 +CONFIGURE_ARGS+=--enable-introspection
