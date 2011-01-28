@@ -1,0 +1,16 @@
+--- Makefile.orig	2010-12-13 14:57:12.000000000 -0500
++++ Makefile	2010-12-27 15:40:52.000000000 -0500
+@@ -102,8 +102,11 @@
+ 	@${ECHO_MSG} " [ DONE ]"
+ 
+ 	@${ECHO_MSG} -n ">> Fixing ownership settings..."
+-	@${CHOWN} -R ${TOMCAT_USER}:${TOMCAT_GROUP} ${APP_HOME}/conf ${APP_HOME}/logs \
+-		${APP_HOME}/temp ${APP_HOME}/webapps ${APP_HOME}/work
++	@${CHOWN} -R root:${TOMCAT_GROUP} ${APP_HOME}/conf \
++		${APP_HOME}/webapps
++	@${CHOWN} -R ${TOMCAT_USER}:${TOMCAT_GROUP} ${APP_HOME}/logs \
++		${APP_HOME}/temp ${APP_HOME}/work
++	@$(CHMOD) -R g+r $(APP_HOME)/conf
+ 	@${ECHO_MSG} " [ DONE ]"
+ 
+ 	@${ECHO_MSG} -n ">> Fixing permissions..."
