@@ -1,0 +1,38 @@
+--- Makefile.ext.orig	2011-02-22 08:44:27.000000000 -0700
++++ Makefile.ext	2011-02-22 08:49:47.000000000 -0700
+@@ -85,22 +85,17 @@
+ LIB_DEPENDS=	freetype.9:${PORTSDIR}/print/freetype2 \
+ 		png.6:${PORTSDIR}/graphics/png \
+ 		jpeg.11:${PORTSDIR}/graphics/jpeg
+-.	if !defined(WITHOUT_X11)
+-USE_XORG=	xpm
+-.	endif
+ 
+ CONFIGURE_ARGS+=--with-gd \
+ 		--with-freetype-dir=${LOCALBASE} \
+ 		--with-jpeg-dir=${LOCALBASE} \
+ 		--with-png-dir=${LOCALBASE} \
+ 		--with-zlib-dir=/usr
+-.	if !defined(WITHOUT_X11)
+-CONFIGURE_ARGS+=--with-xpm-dir=${LOCALBASE}
+-.	endif
+ 
+ OPTIONS=	T1LIB "Include T1lib support" on \
+ 		TRUETYPE "Enable TrueType string function" on \
+-		JIS "Enable JIS-mapped Japanese font support" off
++		JIS "Enable JIS-mapped Japanese font support" off \
++		X11 "Enable XPM support (X11)" on
+ 
+ PHP_HEADER_DIRS=libgd
+ .endif
+@@ -480,6 +475,10 @@
+ .	if defined(WITH_JIS)
+ CONFIGURE_ARGS+=--enable-gd-jis-conv
+ .	endif
++.	if !defined(WITHOUT_X11)
++USE_XORG=	xpm
++CONFIGURE_ARGS+=--with-xpm-dir=${LOCALBASE}
++.	endif
+ .endif
+ 
+ .if ${PHP_MODNAME} == "mbstring"
