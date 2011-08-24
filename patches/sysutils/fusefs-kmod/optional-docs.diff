@@ -1,0 +1,39 @@
+--- Makefile.orig	2011-07-07 11:16:41.896186228 -0400
++++ Makefile	2011-07-07 11:24:35.330421864 -0400
+@@ -19,7 +19,7 @@
+ 
+ BUILD_DEPENDS=	fusefs-libs>2.4.1:${PORTSDIR}/sysutils/fusefs-libs
+ 
+-.if !defined(NOPORTDOCS)
++.if !defined(NOPORTDOCS) && defined(WITH_DOCS)
+ BUILD_DEPENDS+=	deplate:${PORTSDIR}/textproc/ruby-deplate
+ .endif
+ 
+@@ -55,6 +55,9 @@
+ 		tabbar-right.css
+ 
+ OPTIONS=	AUTOSETUP "Automatic global config file setup" off
++.if !defined(NOPORTDOCS)
++OPTIONS+=	DOCS "Install documentation (requires ruby)" on
++.endif
+ 
+ .include <bsd.port.pre.mk>
+ 
+@@ -83,7 +86,7 @@
+ 	@${CP} ${LOCALBASE}/include/fuse/fuse_kernel.h ${WRKSRC}/fuse_module
+ 
+ post-build:
+-.if !defined(NOPORTDOCS)
++.if !defined(NOPORTDOCS) && defined(WITH_DOCS)
+ 	@cd ${WRKSRC}/doc && make plaintext html_chunked
+ .endif
+ 
+@@ -99,7 +102,7 @@
+ 	@${ECHO_CMD}; ${CAT} ${PKGMESSAGE}; ${ECHO_CMD}
+ .endif
+ 
+-.if !defined(NOPORTDOCS)
++.if !defined(NOPORTDOCS) && defined(WITH_DOCS)
+ 	@${MKDIR} ${DOCSDIR}/kmod/html
+ .for i in ${TXT_DOCS}
+ 	@${INSTALL_DATA} ${WRKSRC}/doc/plaintext_out/$i ${DOCSDIR}/kmod
