@@ -83,20 +83,26 @@
  LIB_DEPENDS+=		wmf.2:${PORTSDIR}/graphics/libwmf
  PLIST_SUB+=		WMF=""
 --- pkg-plist.orig	2011-09-13 02:20:23.783693678 -0400
-+++ pkg-plist	2011-09-13 02:23:27.268784381 -0400
-@@ -280,9 +280,9 @@
++++ pkg-plist	2011-09-13 02:50:33.014594533 -0400
+@@ -280,12 +280,12 @@
  libexec/gimp/2.2/modules/libdisplay-filter-high-contrast.a
  libexec/gimp/2.2/modules/libdisplay-filter-high-contrast.la
  libexec/gimp/2.2/modules/libdisplay-filter-high-contrast.so
 -libexec/gimp/2.2/modules/libdisplay-filter-lcms.a
 -libexec/gimp/2.2/modules/libdisplay-filter-lcms.la
 -libexec/gimp/2.2/modules/libdisplay-filter-lcms.so
+-libexec/gimp/2.2/modules/libdisplay-filter-proof.a
+-libexec/gimp/2.2/modules/libdisplay-filter-proof.la
+-libexec/gimp/2.2/modules/libdisplay-filter-proof.so
 +%%LCMS%%libexec/gimp/2.2/modules/libdisplay-filter-lcms.a
 +%%LCMS%%libexec/gimp/2.2/modules/libdisplay-filter-lcms.la
 +%%LCMS%%libexec/gimp/2.2/modules/libdisplay-filter-lcms.so
- libexec/gimp/2.2/modules/libdisplay-filter-proof.a
- libexec/gimp/2.2/modules/libdisplay-filter-proof.la
- libexec/gimp/2.2/modules/libdisplay-filter-proof.so
++%%LCMS%%libexec/gimp/2.2/modules/libdisplay-filter-proof.a
++%%LCMS%%libexec/gimp/2.2/modules/libdisplay-filter-proof.la
++%%LCMS%%libexec/gimp/2.2/modules/libdisplay-filter-proof.so
+ libexec/gimp/2.2/plug-ins/alien-map
+ libexec/gimp/2.2/plug-ins/align-layers
+ libexec/gimp/2.2/plug-ins/animation-optimize
 @@ -352,13 +352,13 @@
  libexec/gimp/2.2/plug-ins/file-header
  libexec/gimp/2.2/plug-ins/file-html-table
