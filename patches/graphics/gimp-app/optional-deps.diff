@@ -1,0 +1,135 @@
+--- Makefile.orig	2011-09-13 02:13:32.473489728 -0400
++++ Makefile	2011-09-13 02:19:37.917671042 -0400
+@@ -25,11 +25,7 @@
+ COMMENT=	A GNU Image Manipulation Program
+ 
+ BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:${PORTSDIR}/misc/iso-codes
+-LIB_DEPENDS=	png.6:${PORTSDIR}/graphics/png \
+-		jpeg.11:${PORTSDIR}/graphics/jpeg \
+-		tiff.4:${PORTSDIR}/graphics/tiff \
+-		lcms.1:${PORTSDIR}/graphics/lcms \
+-		gegl-0.1.105:${PORTSDIR}/graphics/gegl \
++LIB_DEPENDS=	gegl-0.1.105:${PORTSDIR}/graphics/gegl \
+ 		babl-0.1:${PORTSDIR}/x11/babl
+ RUN_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:${PORTSDIR}/misc/iso-codes
+ 
+@@ -65,11 +61,15 @@
+ 		EXIF "reading meta-data from camera/scanner" on \
+ 		GVFS "Use GVFS for the URI plug-in" on \
+ 		HELPBROWSER "internal help browser" on \
++		JPEG "JPEG format support" on \
++		LCMS "lcms support" on \
+ 		MNG "MNG format support" on \
+ 		MP "multiple processor support" off \
++		PNG "PNG format support" on \
+ 		POPPLER "PDF format support" on \
+ 		RSVG "SVG format support" on \
+ 		SIMD "Use cpu-specific optimizations if available" off \
++		TIFF "TIFF format support" on \
+ 		WMF "wmf plugin" on
+ .endif
+ 
+@@ -140,6 +140,22 @@
+ PLIST_SUB+=		HELPBROWSER="@comment "
+ .endif
+ 
++.if defined(WITH_JPEG)
++LIB_DEPENDS+=		jpeg.11:${PORTSDIR}/graphics/jpeg
++PLIST_SUB+=		JPEG=""
++.else
++CONFIGURE_ARGS+=	--without-libjpeg
++PLIST_SUB+=		JPEG="@comment "
++.endif
++
++.if defined(WITH_LCMS)
++LIB_DEPENDS+=		lcms.1:${PORTSDIR}/graphics/lcms
++PLIST_SUB+=		LCMS=""
++.else
++CONFIGURE_ARGS+=	--without-lcms
++PLIST_SUB+=		LCMS="@comment "
++.endif
++
+ .if defined(WITH_MNG)
+ LIB_DEPENDS+=		mng.1:${PORTSDIR}/graphics/libmng
+ PLIST_SUB+=		MNG=""
+@@ -154,6 +170,14 @@
+ CONFIGURE_ARGS+=	--disable-mp
+ .endif
+ 
++.if defined(WITH_PNG)
++LIB_DEPENDS+=		png.6:${PORTSDIR}/graphics/png
++PLIST_SUB+=		PNG=""
++.else
++CONFIGURE_ARGS+=	--without-libpng
++PLIST_SUB+=		PNG="@comment "
++.endif
++
+ .if defined(WITH_POPPLER)
+ LIB_DEPENDS+=		poppler-glib.6:${PORTSDIR}/graphics/poppler-gtk
+ PLIST_SUB+=		POPPLER=""
+@@ -170,6 +194,14 @@
+ PLIST_SUB+=		SVG="@comment "
+ .endif
+ 
++.if defined(WITH_TIFF)
++LIB_DEPENDS+=		tiff.4:${PORTSDIR}/graphics/tiff
++PLIST_SUB+=		TIFF=""
++.else
++CONFIGURE_ARGS+=	--without-libtiff
++PLIST_SUB+=		TIFF="@comment "
++.endif
++
+ .if defined(WITH_WMF)
+ LIB_DEPENDS+=		wmf.2:${PORTSDIR}/graphics/libwmf
+ PLIST_SUB+=		WMF=""
+--- pkg-plist.orig	2011-09-13 02:20:23.783693678 -0400
++++ pkg-plist	2011-09-13 02:23:27.268784381 -0400
+@@ -280,9 +280,9 @@
+ libexec/gimp/2.2/modules/libdisplay-filter-high-contrast.a
+ libexec/gimp/2.2/modules/libdisplay-filter-high-contrast.la
+ libexec/gimp/2.2/modules/libdisplay-filter-high-contrast.so
+-libexec/gimp/2.2/modules/libdisplay-filter-lcms.a
+-libexec/gimp/2.2/modules/libdisplay-filter-lcms.la
+-libexec/gimp/2.2/modules/libdisplay-filter-lcms.so
++%%LCMS%%libexec/gimp/2.2/modules/libdisplay-filter-lcms.a
++%%LCMS%%libexec/gimp/2.2/modules/libdisplay-filter-lcms.la
++%%LCMS%%libexec/gimp/2.2/modules/libdisplay-filter-lcms.so
+ libexec/gimp/2.2/modules/libdisplay-filter-proof.a
+ libexec/gimp/2.2/modules/libdisplay-filter-proof.la
+ libexec/gimp/2.2/modules/libdisplay-filter-proof.so
+@@ -352,13 +352,13 @@
+ libexec/gimp/2.2/plug-ins/file-header
+ libexec/gimp/2.2/plug-ins/file-html-table
+ libexec/gimp/2.2/plug-ins/file-ico
+-libexec/gimp/2.2/plug-ins/file-jpeg
++%%JPEG%%libexec/gimp/2.2/plug-ins/file-jpeg
+ %%MNG%%libexec/gimp/2.2/plug-ins/file-mng
+ libexec/gimp/2.2/plug-ins/file-pat
+ libexec/gimp/2.2/plug-ins/file-pcx
+ %%POPPLER%%libexec/gimp/2.2/plug-ins/file-pdf
+ libexec/gimp/2.2/plug-ins/file-pix
+-libexec/gimp/2.2/plug-ins/file-png
++%%PNG%%libexec/gimp/2.2/plug-ins/file-png
+ libexec/gimp/2.2/plug-ins/file-pnm
+ libexec/gimp/2.2/plug-ins/file-ps
+ libexec/gimp/2.2/plug-ins/file-psd-load
+@@ -369,8 +369,8 @@
+ libexec/gimp/2.2/plug-ins/file-sunras
+ %%SVG%%libexec/gimp/2.2/plug-ins/file-svg
+ libexec/gimp/2.2/plug-ins/file-tga
+-libexec/gimp/2.2/plug-ins/file-tiff-load
+-libexec/gimp/2.2/plug-ins/file-tiff-save
++%%TIFF%%libexec/gimp/2.2/plug-ins/file-tiff-load
++%%TIFF%%libexec/gimp/2.2/plug-ins/file-tiff-save
+ libexec/gimp/2.2/plug-ins/file-uri
+ %%WMF%%libexec/gimp/2.2/plug-ins/file-wmf
+ libexec/gimp/2.2/plug-ins/file-xbm
+@@ -398,7 +398,7 @@
+ libexec/gimp/2.2/plug-ins/imagemap
+ libexec/gimp/2.2/plug-ins/iwarp
+ libexec/gimp/2.2/plug-ins/jigsaw
+-libexec/gimp/2.2/plug-ins/lcms
++%%LCMS%%libexec/gimp/2.2/plug-ins/lcms
+ libexec/gimp/2.2/plug-ins/lens-apply
+ libexec/gimp/2.2/plug-ins/lens-distortion
+ libexec/gimp/2.2/plug-ins/lens-flare
