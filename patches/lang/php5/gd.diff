@@ -21,7 +21,7 @@
  		TRUETYPE "Enable TrueType string function" on \
 -		JIS "Enable JIS-mapped Japanese font support" off
 +		JIS "Enable JIS-mapped Japanese font support" off \
-+		X11 "Enable XPM support (X11)" on
++		X11 "Enable XPM support (requires X11)" on
  
  PHP_HEADER_DIRS=libgd
  .endif
