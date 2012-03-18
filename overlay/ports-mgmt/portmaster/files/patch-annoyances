@@ -1,0 +1,27 @@
+--- portmaster.sh.in.orig	2012-03-18 05:23:03.000000000 -0400
++++ portmaster.sh.in	2012-03-18 05:25:55.000000000 -0400
+@@ -149,10 +149,6 @@
+ 		/bin/unlink $f
+ 	done
+ 
+-	if [ -n "$PM_WRKDIRPREFIX" ]; then
+-		pm_v "===>>> Removing empty directories from WRKDIRPREFIX"
+-		find -d $PM_WRKDIRPREFIX -mindepth 1 -type d -empty -delete 2>/dev/null
+-	fi
+ 
+ 	case "$DISPLAY_LIST" in
+ 	*' '*)	if [ -n "$1" ]; then
+@@ -3926,13 +3922,6 @@
+ [ -n "$PM_URB" -o -n "$PM_URB_UP" -o -n "$PM_FORCE" ] &&
+ 	$PM_SU_CMD touch $pdb/$new_port/PM_UPGRADE_DONE_FLAG
+ 
+-if [ -z "$DONT_SCRUB_DISTFILES" ]; then
+-	delete_stale_distfiles $portdir
+-	if [ -n "$ro_opd" ]; then
+-		delete_all_distfiles $ro_opd
+-		delete_dist_list
+-	fi
+-fi
+ 
+ safe_exit
+ 
