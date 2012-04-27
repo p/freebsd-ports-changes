@@ -1,0 +1,10 @@
+--- Makefile.orig	2012-04-27 00:51:33.286148032 -0400
++++ Makefile	2012-04-27 00:52:03.011156937 -0400
+@@ -18,7 +18,6 @@
+ 
+ BUILD_DEPENDS=	nspr>=4.8.6:${PORTSDIR}/devel/nspr
+ 
+-DEPRECATED=	will be unsupported by when Firefox 12 is release, migrate to www/firefox now
+ USE_AUTOTOOLS=	autoconf213
+ LATEST_LINK=	firefox36
+ USE_GECKO=	gecko
