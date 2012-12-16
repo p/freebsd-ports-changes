@@ -1,0 +1,23 @@
+diff --git portmaster portmaster
+index ff06955..7f71d3b 100755
+--- portmaster
++++ portmaster
+@@ -165,10 +165,6 @@ parent_exit () {
+ 			fi
+ 			sleep 2
+ 		done
+-
+-		pm_v "===>>> Removing empty directories from WRKDIRPREFIX"
+-		[ -n "$needws" ] && echo '' || pm_v
+-		find $PM_WRKDIRPREFIX -depth -mindepth 1 -type d -empty -delete 2>/dev/null
+ 	fi
+ 
+ 	case "$DISPLAY_LIST" in
+@@ -2088,6 +2084,7 @@ set_distfiles_and_subdir () {
+ }
+ 
+ delete_stale_distfiles () {
++	return
+ 	# Global: distfiles_checked
+ 	local file answer
+ 
