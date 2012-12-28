@@ -1,0 +1,14 @@
+--- xmms-config.in.orig	2012-12-28 17:11:29.000000000 -0500
++++ xmms-config.in	2012-12-28 17:11:46.000000000 -0500
+@@ -153,9 +153,9 @@
+ fi
+ 
+ if test "$lib_dir" != "/usr/lib"; then
+-    libs="-L$lib_dir $gtk_libs -lxmms"
++    libs="-L$lib_dir $gtk_libs -lxmms -liconv"
+ else
+-    libs="$gtk_libs -lxmms"
++    libs="$gtk_libs -lxmms -liconv"
+ fi
+ 
+ if test "$echo_cflags" = "yes"; then
