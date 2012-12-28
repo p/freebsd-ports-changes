@@ -5,10 +5,10 @@
  
  if test "$lib_dir" != "/usr/lib"; then
 -    libs="-L$lib_dir $gtk_libs -lxmms"
-+    libs="-L$lib_dir $gtk_libs -lxmms -liconv"
++    libs="-L$lib_dir $gtk_libs -lxmms -liconv -lintl"
  else
 -    libs="$gtk_libs -lxmms"
-+    libs="$gtk_libs -lxmms -liconv"
++    libs="$gtk_libs -lxmms -liconv -lintl"
  fi
  
  if test "$echo_cflags" = "yes"; then
