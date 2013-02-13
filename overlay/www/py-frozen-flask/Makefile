@@ -18,7 +18,7 @@ LICENSE=	BSD
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Flask>=0.6:${PORTSDIR}/www/py-flask
 
-USE_PYTHON=	2.5+
+USE_PYTHON=	2.6+
 USE_PYDISTUTILS=	easy_install
 
 .include <bsd.port.mk>
