@@ -1,0 +1,26 @@
+--- Makefile.orig	2012-12-14 16:29:45.051625672 -0500
++++ Makefile	2012-12-14 16:45:34.227842482 -0500
+@@ -21,12 +21,10 @@
+ 
+ .if !defined(REFERENCE_PORT)
+ 
+-BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/freetype2.pc:${PORTSDIR}/print/freetype2 \
+-		g-ir-scanner:${PORTSDIR}/devel/gobject-introspection
++BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/freetype2.pc:${PORTSDIR}/print/freetype2
+ LIB_DEPENDS=	cairo.2:${PORTSDIR}/graphics/cairo
+ RUN_DEPENDS=	${FONTSCALE}:${X_FONTS_TTF_PORT} \
+-		${FONTENCOD}:${X_FONTS_ENCODINGS_PORT} \
+-		${LOCALBASE}/lib/girepository-1.0/GObject-2.0.typelib:${PORTSDIR}/devel/gobject-introspection
++		${FONTENCOD}:${X_FONTS_ENCODINGS_PORT}
+ 
+ USE_GETTEXT=	yes
+ USE_GMAKE=	yes
+@@ -35,7 +33,7 @@
+ USE_AUTOTOOLS=	libtool
+ USE_GNOME=	gnomehack glib20 ltverhack referencehack
+ CONFIGURE_ARGS=	--with-html-dir=${PREFIX}/share/doc \
+-		--enable-static
++		--enable-static --disable-introspection
+ # Hmm.. tough one.  Found this one when I had graphics/hdf installed
+ # (which installs glist.h) which is picked up before the glib-2.0
+ # stuff, with Bad Results[tm]
