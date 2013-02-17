@@ -16,7 +16,7 @@ COMMENT=	Provides flat static pages to a Flask application
 
 LICENSE=	BSD
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Flask>=0.6:${PORTSDIR}/www/py-flask
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}Flask:${PORTSDIR}/www/py-flask
 
 USE_PYTHON=	2.6+
 USE_PYDISTUTILS=	easy_install
