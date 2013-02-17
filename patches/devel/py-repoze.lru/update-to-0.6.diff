@@ -1,0 +1,31 @@
+diff -ur /main/pports/devel/py-repoze.lru/Makefile /main/ports/devel/py-repoze.lru/Makefile
+--- /main/pports/devel/py-repoze.lru/Makefile	2012-11-17 00:56:50.000000000 -0500
++++ /main/ports/devel/py-repoze.lru/Makefile	2013-02-17 17:00:27.994572148 -0500
+@@ -6,7 +6,7 @@
+ #
+ 
+ PORTNAME=	repoze.lru
+-PORTVERSION=	0.4
++PORTVERSION=	0.6
+ CATEGORIES=	devel python
+ MASTER_SITES=	CHEESESHOP
+ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
+diff -ur /main/pports/devel/py-repoze.lru/distinfo /main/ports/devel/py-repoze.lru/distinfo
+--- /main/pports/devel/py-repoze.lru/distinfo	2011-09-25 23:54:23.000000000 -0400
++++ /main/ports/devel/py-repoze.lru/distinfo	2013-02-17 17:01:11.309252087 -0500
+@@ -1,2 +1,2 @@
+-SHA256 (repoze.lru-0.4.tar.gz) = 8e2d2152c3ca15aefa1a2bc7f2763d2351bf6309c86aab96348463848bd06d0c
+-SIZE (repoze.lru-0.4.tar.gz) = 7242
++SHA256 (repoze.lru-0.6.tar.gz) = 0f7a323bf716d3cb6cb3910cd4fccbee0b3d3793322738566ecce163b01bbd31
++SIZE (repoze.lru-0.6.tar.gz) = 19814
+diff -ur /main/pports/devel/py-repoze.lru/pkg-plist /main/ports/devel/py-repoze.lru/pkg-plist
+--- /main/pports/devel/py-repoze.lru/pkg-plist	2011-03-20 22:43:44.000000000 -0400
++++ /main/ports/devel/py-repoze.lru/pkg-plist	2013-02-17 17:03:01.993427310 -0500
+@@ -4,6 +4,7 @@
+ %%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/EGG-INFO/entry_points.txt
+ %%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/EGG-INFO/namespace_packages.txt
+ %%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/EGG-INFO/not-zip-safe
++%%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/EGG-INFO/requires.txt
+ %%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/EGG-INFO/top_level.txt
+ %%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/repoze/__init__.py
+ %%PYTHON_SITELIBDIR%%/%%PYEASYINSTALL_EGG%%/repoze/__init__.pyc
