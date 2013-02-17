@@ -1,0 +1,12 @@
+--- src/common/ssl.c.orig	2013-01-19 18:09:50.000000000 -0500
++++ src/common/ssl.c	2013-01-19 18:10:26.000000000 -0500
+@@ -31,6 +31,9 @@
+ #include <errno.h>
+ #include <pthread.h>
+ 
++/* include gnutls.h to get GNUTLS_VERSION_NUMBER define */
++#include <gnutls/gnutls.h>
++
+ #if GNUTLS_VERSION_NUMBER <= 0x020b00
+ #include <gcrypt.h>
+ GCRY_THREAD_OPTION_PTHREAD_IMPL;
