@@ -1,0 +1,10 @@
+--- ./chrome/browser/ui/views/status_bubble_views.cc.orig	2013-09-11 19:35:42.000000000 -0400
++++ ./chrome/browser/ui/views/status_bubble_views.cc	2013-09-11 19:39:10.000000000 -0400
+@@ -832,6 +832,7 @@
+ }
+ 
+ int StatusBubbleViews::GetStandardStatusBubbleWidth() {
++  return GetMaxStatusBubbleWidth();
+   return base_view_->bounds().width() / 3;
+ }
+ 
