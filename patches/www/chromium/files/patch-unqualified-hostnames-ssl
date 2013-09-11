@@ -1,0 +1,11 @@
+--- content/browser/ssl/ssl_policy.cc.orig	2013-09-11 17:20:36.000000000 -0400
++++ content/browser/ssl/ssl_policy.cc	2013-09-11 17:21:15.000000000 -0400
+@@ -129,7 +129,7 @@
+     // CAs issue certificates for intranet hosts to everyone.  Therefore, we
+     // mark intranet hosts as being non-unique.
+     if (IsIntranetHost(entry->GetURL().host())) {
+-      entry->GetSSL().cert_status |= net::CERT_STATUS_NON_UNIQUE_NAME;
++      //entry->GetSSL().cert_status |= net::CERT_STATUS_NON_UNIQUE_NAME;
+     }
+   }
+ 
